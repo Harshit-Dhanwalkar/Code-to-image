@@ -24,11 +24,27 @@ Leveraging the `stb_truetype` library for robust font rendering and `stb_image_w
 Before building and running the `code-to-image` utility, ensure you have the following:
 
 - **C Compiler:** A C compiler like GCC or Clang.
-- **`stb` Library:** The `stb` single-file public domain libraries (specifically `stb_image_write.h` and `stb_truetype.h`) must be cloned into a subdirectory named `stb/` in your project root.
+- **`stb` Library (Submodule):** The `stb` single-file public domain libraries (specifically `stb_image_write.h` and `stb_truetype.h`) are included as a Git submodule.
   ```bash
-  git clone [https://github.com/nothings/stb.git](https://github.com/nothings/stb.git) stb
+  # To get the submodule content after cloning the main repo:
+  git submodule update --init --recursive
   ```
-- **TrueType Font (`.ttf`) Files:** Place your desired `.ttf` font files (e.g., `JetBrainsMono-Regular.ttf`, `FiraCode-Regular.ttf`) inside a `Fonts/` directory at your project's root. Subdirectories within `Fonts/` will also be searched.
+- **TrueType Font (`.ttf`) Files:** Place your desired `.ttf` font files inside a `Fonts/` directory at your project's root. Subdirectories within `Fonts/` will also be searched.
+  - **JetBrains Mono:** Available from [https://www.jetbrains.com/lp/mono/](https://www.jetbrains.com/lp/mono/)
+  - **Fira Code:** Available from [https://github.com/tonsky/FiraCode](https://github.com/tonsky/FiraCode)
+
+---
+
+## Cloning the Repository (with Submodules)
+
+Since this repository uses Git submodules for the `stb` library, you'll need an extra step after cloning to ensure you have all the necessary files:
+
+```bash
+git clone https://github.com/Harshit-Dhanwalkar/Code-to-image
+cd Code-to-image
+# Initialize and update the submodule (stb library)
+git submodule update --init --recursive
+```
 
 ---
 
@@ -101,6 +117,12 @@ Here are some planned features and improvements for the `code-to-image` utility:
 - [ ] **Line Numbers:** Add an option to display line numbers alongside the code in the output image.
 - [ ] **Padding and Margins:** More granular control over internal padding and margins within the code block.
 - [ ] **Background Gradients/Patterns:** Options for more complex image backgrounds.
+
+---
+
+## FIXES
+
+- [ ] `--help` is not working.
 
 ---
 
