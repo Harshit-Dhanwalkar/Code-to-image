@@ -27,7 +27,7 @@ Before building and running the `code-to-image` utility, ensure you have the fol
 - **`stb` Library (Submodule):** The `stb` single-file public domain libraries (specifically `stb_image_write.h` and `stb_truetype.h`) are included as a Git submodule.
   ```bash
   # To get the submodule content after cloning the main repo:
-  git submodule update --init --recursive
+  # git submodule update --init --recursive
   ```
 - **TrueType Font (`.ttf`) Files:** Place your desired `.ttf` font files inside a `Fonts/` directory at your project's root. Subdirectories within `Fonts/` will also be searched.
   - **JetBrains Mono:** Available from [https://www.jetbrains.com/lp/mono/](https://www.jetbrains.com/lp/mono/)
@@ -40,7 +40,7 @@ Before building and running the `code-to-image` utility, ensure you have the fol
 Since this repository uses Git submodules for the `stb` library, you'll need an extra step after cloning to ensure you have all the necessary files:
 
 ```bash
-git clone https://github.com/Harshit-Dhanwalkar/Code-to-image
+git clone [https://github.com/Harshit-Dhanwalkar/Code-to-image](https://github.com/Harshit-Dhanwalkar/Code-to-image)
 cd Code-to-image
 # Initialize and update the submodule (stb library)
 git submodule update --init --recursive
@@ -77,22 +77,58 @@ By default, it will use the first font it finds in the `Fonts/` directory, a def
 
 ### Options
 
+- **`-i FILE`**: Input code file to convert (e.g., `my_script.c`). **This is a mandatory option.**
 - **`-f FONT_NAME`**: Selects a specific font by its discovered name (e.g., `JetBrainsMono-Regular`, `FiraCode-Regular`). Run `./code-to-image --help` to see a list of available fonts.
 - **`-fs SIZE`**: Sets the font size in pixels (e.g., `-fs 24`).
-- **`-w WIDTH`**: Sets the image width in pixels (e.g., `-w 1200`).
-- **`-h HEIGHT`**: Sets the image height in pixels (e.g., `-h 800`).
+- **`-w WIDTH`**: Sets the image width in pixels (default: calculated based on content, or 200 if no content).
+- **`-h HEIGHT`**: Sets the image height in pixels (default: calculated based on content, or 100 if no content).
 - **`OUTPUT_PATH.png`**: (Positional argument) Specifies the output filename and path for the image (e.g., `my_custom_code.png`). If omitted, defaults to `highlighted_code.png`.
 - **`--help` or `-u`**: Displays the usage information and a list of all detected fonts.
 
 ### Examples
 
-**1. Generate an image with a specific font and custom size:**
+**1. Generate an image from a Python script with JetBrains Mono font:**
 
-```bash
-./code-to-image my_awesome_code.png -f FiraCode-Regular -fs 22 -w 1024 -h 768
+First, create a sample Python file (e.g., `examples/test.py`):
+
+```python
+# examples/test.py
+def greet(name):
+    """
+    This function greets the given name.
+    """
+    message = f"Hello, {name}!"
+    print(message)
+    # A quick loop
+    for i in range(3):
+        print(i)
+
+if __name__ == "__main__":
+    greet("World")
+    # End of script
 ```
 
-**2. See available fonts:**
+Then, run the `code-to-image` utility:
+
+```bash
+./code-to-image examples/output.png -i examples/test.py -f JetBrainsMono-Regular -fs 20 -w 800 -h 400
+```
+
+This command will read `examples/test.py`, render its content using the `JetBrainsMono-Regular` font at 20px size, and save the output to `examples/output.png`. The image will have a width of 800 pixels and a height of 400 pixels.
+
+**Expected Output Image (Conceptual, without actual syntax highlighting yet):**
+
+![Example Output Image](examples/output.png)
+
+The image will display the Python code with a dark background and white text, automatically sized to fit the content if `-w` and `-h` are not explicitly set (or constrained by them if they are).
+
+**2. Generate an image with a specific font and custom size:**
+
+```bash
+./code-to-image my_awesome_code.png -i some_code.c -f FiraCode-Regular -fs 22 -w 1024 -h 768
+```
+
+**3. See available fonts:**
 
 ```bash
 ./code-to-image --help
@@ -110,20 +146,11 @@ Simply place your `.ttf` font files into the `Fonts/` directory or any of its su
 
 Here are some planned features and improvements for the `code-to-image` utility:
 
-- [ ] **External Code File Input:** Implement functionality to read code from an external file and render its content into the image. This will be the direct integration with your `CodeTint`'s parsing capabilities.
 - [ ] **Extended Image Output Formats:** Add support for other image formats like JPEG (`.jpg`, `.jpeg`) and BMP (`.bmp`).
 - [ ] **Integrated Theming:** Connect this utility directly with `CodeTint`'s theme system to apply consistent syntax highlighting colors based on defined themes (e.g., Dracula, Nord, Monokai).
-- [ ] **Syntax Highlighting:** Implement the core logic to parse code and apply highlighting based on a chosen theme.
+- [ ] **Syntax Highlighting:** Implement the core logic to parse code (likely using Tree-sitter, similar to `CodeTint`) and apply highlighting based on a chosen theme.
 - [ ] **Line Numbers:** Add an option to display line numbers alongside the code in the output image.
 - [ ] **Padding and Margins:** More granular control over internal padding and margins within the code block.
 - [ ] **Background Gradients/Patterns:** Options for more complex image backgrounds.
 
 ---
-
-## FIXES
-
-- [ ] `--help` is not working.
-
----
-
-Feel free to contribute, report issues, or suggest new features on the project's GitHub repository.
